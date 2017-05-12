@@ -41,11 +41,5 @@
             android:max="10"
             android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/formulario_btSalvarFormulario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SALVAR"/>
-
     </LinearLayout>
 </ScrollView>

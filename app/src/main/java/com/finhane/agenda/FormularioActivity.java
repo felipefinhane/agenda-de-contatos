@@ -2,33 +2,46 @@ package com.finhane.agenda;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RatingBar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.finhane.agenda.entity.Aluno;
+import com.finhane.agenda.model.AlunoModel;
 
 public class FormularioActivity extends AppCompatActivity {
 
-    EditText txtNome, txtEndereco, txtTelefone, txtSite;
+    private FormularioHelper formularioHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+        formularioHelper = new FormularioHelper(this);
+    }
 
-        Button btSalvarFormulario = (Button) findViewById(R.id.formulario_btSalvarFormulario);
-        txtNome = (EditText) findViewById(R.id.formulario_txtNome);
-        txtEndereco = (EditText) findViewById(R.id.formulario_txtEndereco);
-        txtTelefone = (EditText) findViewById(R.id.formulario_txtTelefone);
-        txtSite = (EditText) findViewById(R.id.formulario_txtSite);
-        RatingBar nota = (RatingBar) findViewById(R.id.formulario_nota);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_formulario, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        btSalvarFormulario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(FormularioActivity.this, "Botão clicado, nome: " + txtNome.getText(), Toast.LENGTH_LONG).show();
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_formulario_ok:
+                Aluno aluno = formularioHelper.getAluno();
+
+                AlunoModel alunoModel = new AlunoModel(FormularioActivity.this);
+                alunoModel.save(aluno);
+                alunoModel.close();
+
+                Toast.makeText(FormularioActivity.this, "Aluno Salvo! " + aluno.getNome(), Toast.LENGTH_LONG).show();
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
